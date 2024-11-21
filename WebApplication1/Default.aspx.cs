@@ -1,51 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using Label = System.Web.UI.WebControls.Label;
 
 namespace WebApplication1
 {
-    public partial class _Default : Page
+    public partial class _Default : System.Web.UI.Page
     {
-        protected HtmlGenericControl h1; // Add this line to declare h1  
-
-        private void page_Load(object sender, EventArgs e)
-        {
-            // Verificiamos si la página se está cargando por primera vez
-            if (!IsPostBack)
+        private readonly Dictionary<string, string> users = new Dictionary<string, string>
             {
-                // Verificamos si el usuario ya se había logeado antes
-                if (Session["Username"] != null)
-                {
-                    // Una vez logeado, saludamoos al usuario.
-                    string username = Session["Username"].ToString();
-                    h1.InnerText = $"!Hola, {username}";
-                }
+                { "admin", "admin" },
+                { "usuario1", "1234" }
+            };
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            // Verificar si ya hay una sesión activa
+            if (Session["Username"] != null)
+            {
+                LabelMessage.Text = "Bienvenido " + Session["Username"];
             }
         }
+
         protected void btnSignIn_Click(object sender, EventArgs e)
         {
             string username = txtUsuario.Text;
             string password = txtPassword.Text;
 
-            // Verificamos si los campos no son null
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
-                lblPassword.Text = "Por favor, ingrese correctamente los datos";
+                LabelMessage.Text = "Por favor, ingrese correctamente los datos.";
                 return;
+            }
+
+            if (users.TryGetValue(username, out string storedPassword) && storedPassword == password)
+            {
+                Session["Username"] = username;
+                LabelMessage.Text = "Bienvenido " + username;
+
+                // Actualizar el LabelBienvenida en SiteMaster
+                if (Master is SiteMaster master)
+                {
+                    master.LabelBienvenida.InnerText = "Hola, " + username;
+                    master.LabelBienvenida.HRef = "~/Bienvenida";
+                }
             }
             else
             {
-                Label h1Element = (Label)(FindControl("aspnetTitle"));
-                if (h1Element != null)
-                {
-                    h1Element.Text = $"!Hola, {username}";
-                }
+                LabelMessage.Text = "Usuario o contraseña incorrectos.";
             }
         }
     }

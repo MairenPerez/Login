@@ -4,7 +4,7 @@
 
     <main>
         <section class="row" aria-labelledby="aspnetTitle">
-            <h1 id="aspnetTitle" class="text-center">LOGIN</h1>
+            <h1 id="aspnetTitle" class="text-center">INICIO SESIÓN</h1>
         </section>
 
         <div class="row justify-content-center">
@@ -18,12 +18,17 @@
                                     <asp:TextBox ID="txtUsuario" runat="server" CssClass="form-control"></asp:TextBox>
                                 </div>
                                 <div class="form-group">
-                                    <asp:Label ID="lblPassword" runat="server" Text="Password" CssClass="form-label"></asp:Label>
+                                    <asp:Label ID="lblPassword" runat="server" Text="Contraseña" CssClass="form-label"></asp:Label>
                                     <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="form-control"></asp:TextBox>
                                 </div>
                                 <div class="form-group text-center">
                                     <br />
                                     <asp:Button ID="btnSignIn" runat="server" Text="Iniciar Sesión" CssClass="btn btn-primary" OnClick="btnSignIn_Click" />
+                                </div>
+                                <br />
+
+                                <div class="col">
+                                    <asp:Label ID="LabelMessage" runat="server" CssClass="text-opacity-75"></asp:Label>
                                 </div>
                             </asp:Panel>
                         </ContentTemplate>
